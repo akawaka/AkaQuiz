@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 
 const GameModal = ({ onGameStart, onClose }) => {
   return (
-    <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-900 bg-opacity-50">
-      <div className="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
-        <h2 className="mb-4 text-2xl font-bold">How to Play</h2>
+    <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-900 bg-opacity-50" onClick={onClose}>
+      <div className="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg" onClick={(e) => e.stopPropagation()}>
+        <h2 className="mb-4 text-2xl font-bold">Comment jouer ?</h2>
         <p className="mb-4">
           Vous avez 2 minutes pour répondre le plus de questions possible. Essayez de faire le plus de points !
         </p>
