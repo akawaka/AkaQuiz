@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 const GameModal = ({ onGameStart, onClose }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+    <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-900 bg-opacity-50">
       <div className="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
         <h2 className="mb-4 text-2xl font-bold">How to Play</h2>
         <p className="mb-4">
