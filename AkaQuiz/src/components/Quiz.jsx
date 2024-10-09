@@ -4,8 +4,14 @@ import TimerProgress from "./TimerProgress";
 import AuthenticationModal from "./AuthenticationModal";
 import otterImage from "../../public/images/otter.webp";
 import cartoonTroutImage from "../../public/images/cartoon_trout.webp";
+import { HomeIcon } from "@heroicons/react/20/solid";
+import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import Leaderboard from "./Leaderboard";
 import { supabase } from "../supabaseClient";
+import Input from "./foundations/Input";
+import Button from "./foundations/Button";
+import Card from "./foundations/Card";
+import Heading from "./foundations/Heading";
 
 const Quiz = ({
   timeLeft,
@@ -23,6 +29,7 @@ const Quiz = ({
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [isLeaderboardVisible, setIsLeaderboardVisible] = useState(false);
+  const [isGameEnd, setIsGameEnd] = useState(false);
 
   // Fetch the words from the JSON file
   useEffect(() => {
@@ -90,6 +97,7 @@ const Quiz = ({
   const handleRestart = () => {
     resetGame();
     onRestart();
+    setIsGameEnd(false);
   };
 
   // Handle passing the word (skip)
@@ -172,6 +180,9 @@ const Quiz = ({
     if (!isActive && user) {
       submitScore(score);
     }
+    if (!isActive) {
+      setIsGameEnd(true);
+    }
   }, [isActive, user, score, submitScore]);
 
   // Handle opening the authentication modal at the end of the game
@@ -205,126 +216,144 @@ const Quiz = ({
     setIsLeaderboardVisible((prevVisible) => !prevVisible);
   };
 
-  return (
-    <div className="z-10 flex flex-col items-center w-1/3 p-8 bg-white rounded-lg shadow-md">
-      <h1 className="text-3xl font-bold">Quiz Time!</h1>
-      <TimerProgress
-        timeLeft={timeLeft}
-        totalTime={totalTime}
-        otterImage={otterImage}
-        cartoonTroutImage={cartoonTroutImage}
-      />
-
-      {isActive ? (
-        <>
-          <div className="mt-6">
-            <p className="text-lg">Définition: {currentWord.def}</p>
-            <p className="text-gray-600 text-md">
-              Catégorie: {currentWord.catGram}
-            </p>
+  if (isGameEnd) {
+    return (
+      <div className="relative z-10 grid gap-8">
+        <Card>
+          <Heading level={2}>Temps écoulé!</Heading>
+          <div>
+            <p className="text-lg">Score final: {score}</p>
+            <p className="text-md">Bonnes réponses: {correctGuesses}</p>
+            <div className="flex items-center mt-4 space-x-4">
+              <Button
+                label="Recommencer"
+                variant="primary"
+                onClick={handleRestart}
+              ></Button>
+              <Button
+                label="Voir le leaderboard"
+                variant="secondary"
+                onClick={handleToggleLeaderboard}
+              ></Button>
+              {!user && (
+                <Button
+                  label="Enregistrer le score"
+                  variant="primary"
+                  onClick={handleOpenAuthModal}
+                ></Button>
+              )}
+            </div>
           </div>
-
-
-          <form onSubmit={handleSubmit} className="mt-4">
-            <input
-              type="text"
-              value={userGuess}
-              onChange={handleInputChange}
-              className="p-2 border border-gray-300 rounded"
-              placeholder="Guess the word"
-            />
-            <button
-              type="submit"
-              className="px-4 py-2 ml-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-            >
-              Submit
-            </button>
-          </form>
-          <button
-            onClick={handlePass}
-            className="px-4 py-2 mt-4 text-white bg-gray-500 rounded hover:bg-gray-600"
-          >
-            Pass
-          </button>
-
-          {feedback && (
-            <p
-              className={`mt-4 ${
-                feedback === "Correct! Loading a new word..."
-                  ? "text-green-600"
-                  : "text-red-600"
-              }`}
-            >
-              {feedback}
-            </p>
-          )}
-
-          {/* Display the score and correct guesses */}
+        </Card>
+        {/* Render Leaderboard if visible */}
+        {isLeaderboardVisible && (
           <div className="mt-6">
-            <p className="text-lg font-bold">Score: {score}</p>
-            <p className="text-gray-600 text-md">
-              Bonnes réponses: {correctGuesses}
-            </p>
-          </div>
-        </>
-      ) : (
-        <div className="mt-6">
-          <p className="text-2xl font-bold">Temps écoulé!</p>
-          <p className="text-lg">Score final: {score}</p>
-          <p className="text-md">Bonnes réponses: {correctGuesses}</p>
-
-          {/* Buttons to restart the game, return home, or authenticate */}
-          <div className="flex items-center mt-4 space-x-4">
-            <button
-              onClick={handleRestart}
-              className="px-4 py-2 mr-4 text-white bg-green-500 rounded hover:bg-green-600"
-            >
-              Recommencer
-            </button>
-            <button
-              onClick={onReturnHome}
-              className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
-            >
-              Retour à l'accueil
-            </button>
+            <Leaderboard onClose={handleToggleLeaderboard} />
             <button
               onClick={handleToggleLeaderboard}
-              className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+              className="px-4 py-2 mt-4 text-white bg-red-500 rounded hover:bg-red-600"
             >
-              Voir le Leaderboard
+              Fermer le Leaderboard
             </button>
-            {!user && ( // Show auth button only if user is not authenticated
-              <button
-                onClick={handleOpenAuthModal}
-                className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-              >
-                Enregistrer le score
-              </button>
-            )}
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Render Leaderboard if visible */}
-      {isLeaderboardVisible && (
-        <div className="mt-6">
-          <Leaderboard />
-          <button
-            onClick={handleToggleLeaderboard}
-            className="px-4 py-2 mt-4 text-white bg-red-500 rounded hover:bg-red-600"
-          >
-            Fermer le Leaderboard
-          </button>
-        </div>
-      )}
-
-      {/* Authentication Modal */}
+        {/* Authentication Modal */}
       {isAuthModalOpen && (
         <AuthenticationModal
           onClose={() => setIsAuthModalOpen(false)}
           onAuthenticated={handleAuthenticated}
         />
       )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative z-10 grid gap-8">
+      <div className="absolute top-0 left-0">
+        <Button variant="icon" onClick={onReturnHome}>
+          <HomeIcon className="w-6 h-6" />
+        </Button>
+      </div>
+
+      <div className="row-span-3">
+        <Card>
+          <Heading level={2}>Quiz Time !</Heading>
+          <p>
+            Ceci est un jeu ou il faut trouver les mots via les définitions
+            blablabla Essayez d&apos;en trouver le plus possible ! Si c&apos;est trop
+            difficile, vous pouvez passer
+          </p>
+        </Card>
+      </div>
+
+      <div className="row-span-1">
+        <Card>
+          <TimerProgress
+            timeLeft={timeLeft}
+            totalTime={totalTime}
+            otterImage={otterImage}
+            cartoonTroutImage={cartoonTroutImage}
+          />
+        </Card>
+      </div>
+
+      <Card>
+        <div className="mt-6">
+          <p className="text-lg">Définition: {currentWord.def}</p>
+          <p className="text-gray-600 text-md">
+            Catégorie: {currentWord.catGram}
+          </p>
+        </div>
+        <form
+          onSubmit={handleSubmit}
+          className="flex items-center mt-4 space-x-4"
+        >
+          <Input
+            type="text"
+            value={userGuess}
+            onChange={handleInputChange}
+            placeholder="Votre réponse ici..."
+          />
+          <Button
+            label="Valider"
+            onClick={handleSubmit}
+            variant="primary"
+          ></Button>
+        </form>
+        <div className="pt-6">
+          <Button
+            variant="icon"
+            icon={<ArrowPathIcon className="w-6 h-6" />}
+            onClick={handlePass}
+          >
+            O secour c trop dur je pass
+          </Button>
+        </div>
+
+        {feedback && (
+          <p
+            className={`mt-4 ${
+              feedback === "Correct! Chargement d'un nouveau mot..."
+                ? "text-green-600"
+                : "text-red-600"
+            }`}
+          >
+            {feedback}
+          </p>
+        )}
+
+        {/* Display the score and correct guesses */}
+        <Card className="mt-6">
+          <p className="text-lg font-bold">Score: {score}</p>
+          <p className="text-gray-600 text-md">
+            Bonnes réponses: {correctGuesses}
+          </p>
+        </Card>
+      </Card>
+
+
     </div>
   );
 };

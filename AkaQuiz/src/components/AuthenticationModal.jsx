@@ -1,6 +1,11 @@
-import { useState } from 'react';
+// src/components/AuthenticationModal.jsx
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { supabase } from "../supabaseClient";
-import PropTypes from "prop-types";
+import Modal from './foundations/Modal';
+import Input from './foundations/Input';
+import Button from './foundations/Button';
+import Alert from './foundations/Alert';
 
 const AuthenticationModal = ({ onClose, onAuthenticated }) => {
   const [email, setEmail] = useState('');
@@ -8,8 +13,17 @@ const AuthenticationModal = ({ onClose, onAuthenticated }) => {
   const [username, setUsername] = useState('');
   const [isLogin, setIsLogin] = useState(true);
   const [authError, setAuthError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
-  // Handle login
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
+
   const handleLogin = async () => {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -19,14 +33,15 @@ const AuthenticationModal = ({ onClose, onAuthenticated }) => {
     if (error) {
       setAuthError(error.message);
     } else {
-      onAuthenticated(data.user);
-      onClose();
+      setSuccessMessage('Connexion réussie!');
+      setTimeout(() => {
+        onAuthenticated(data.user);
+        onClose();
+      }, 1000);
     }
   };
 
-  // Handle sign-up
   const handleSignUp = async () => {
-    // Step 1: Sign up the user with email and password
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -36,8 +51,6 @@ const AuthenticationModal = ({ onClose, onAuthenticated }) => {
       setAuthError(error.message);
     } else {
       const user = data.user;
-
-      // Step 2: Update the user profile with the username (display name)
       const { error: updateError } = await supabase.auth.updateUser({
         data: { display_name: username },
       });
@@ -45,55 +58,77 @@ const AuthenticationModal = ({ onClose, onAuthenticated }) => {
       if (updateError) {
         setAuthError(updateError.message);
       } else {
-        // Step 3: Pass the authenticated user and username to the parent component
-        onAuthenticated(user, username);
-        onClose();
+        setSuccessMessage('Inscription réussie!');
+        setTimeout(() => {
+          onAuthenticated(user, username);
+          onClose();
+        }, 1000);
       }
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isLogin) {
+      handleLogin();
+    } else {
+      handleSignUp();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-      <div className="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
-        <h2 className="mb-4 text-2xl font-bold">
-          {isLogin ? 'Se connecter' : 'S\'inscrire'} pour enregistrer votre score
-        </h2>
-
-        {authError && <p className="text-red-500">{authError}</p>}
-
-        {/* Only show username field for sign-up */}
-        {!isLogin && (
-          <input
-            type="text"
-            className="w-full p-2 mb-4 border"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+    <>
+      {authError && (
+        <Alert
+          type="error"
+          title="Erreur"
+          description={authError}
+          autoDismissTime={3000}
+        />
+      )}
+      {successMessage && (
+        <Alert
+          type="success"
+          title="Succès"
+          description={successMessage}
+          autoDismissTime={1000}
+        />
+      )}
+      <Modal
+        title={`${isLogin ? 'Se connecter' : 'S\'inscrire'} pour enregistrer votre score`}
+        content=""
+        onClose={onClose}
+      >
+        <form className="flex flex-col space-y-6" onSubmit={handleSubmit}>
+          {!isLogin && (
+            <Input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          )}
+          <Input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-        )}
-
-        <input
-          type="email"
-          className="w-full p-2 mb-2 border"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          className="w-full p-2 mb-4 border"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <button
-          onClick={isLogin ? handleLogin : handleSignUp}
-          className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-        >
-          {isLogin ? 'Login' : 'Sign Up'}
-        </button>
-
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <div className="flex justify-between pt-6">
+            <Button
+              type="submit"
+              label={isLogin ? 'Login' : 'Sign Up'}
+              variant="primary"
+              onClick={handleSubmit}
+            />
+          </div>
+        </form>
         <p
           className="mt-4 text-blue-500 cursor-pointer"
           onClick={() => setIsLogin(!isLogin)}
@@ -102,8 +137,8 @@ const AuthenticationModal = ({ onClose, onAuthenticated }) => {
             ? "Don't have an account? Sign Up"
             : 'Already have an account? Login'}
         </p>
-      </div>
-    </div>
+      </Modal>
+    </>
   );
 };
 

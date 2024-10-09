@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        baloo: ["'Baloo 2'", "sans-serif"],
+      },
       keyframes: {
         wiggle: {
           "0%, 100%": { transform: "rotate(-5deg)" },

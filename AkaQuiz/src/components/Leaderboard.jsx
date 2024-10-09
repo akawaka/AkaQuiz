@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
+import PropTypes from 'prop-types';
+import Table from './foundations/Table';
+import Modal from './foundations/Modal';
 
-const Leaderboard = () => {
+const Leaderboard = ({ onClose }) => {
   const [leaderboard, setLeaderboard] = useState([]);
+
+  // Fetch leaderboard rankings
   useEffect(() => {
     const fetchLeaderboard = async () => {
       const { data, error } = await supabase
@@ -21,20 +26,21 @@ const Leaderboard = () => {
     fetchLeaderboard();
   }, []);
 
-  return (
-    <div>
-      <h2 className="mb-4 text-2xl font-bold">Leaderboard</h2>
-      <ul>
-        {leaderboard.map((entry, index) => (
-          <li key={index} className="flex justify-between">
-            <span>{entry.username}</span>
-            <span>{entry.score}</span>
-          </li>
-        ))}
-      </ul>
+  // Transform leaderboard data into rows for the table
+  const headers = ['Username', 'Score'];
+  const rows = leaderboard.map((entry) => [entry.username, entry.score]);
 
-    </div>
+  return (
+    <Modal
+      title="Leaderboard"
+      content={<Table headers={headers} rows={rows} />}
+      onClose={onClose}
+    />
   );
+};
+
+Leaderboard.propTypes = {
+  onClose: PropTypes.func.isRequired,
 };
 
 export default Leaderboard;

@@ -18,12 +18,12 @@ const TimerProgress = ({
     <div className="flex flex-col items-center justify-center pt-8 w-96">
       <div className="relative w-full">
         {/* Otter Image */}
-        <div className="absolute z-40 -top-7 -left-6">
+        <div className="absolute z-30 -top-7 -left-6">
           <img className="w-16 h-16" src={otterImage} alt="Otter" />
         </div>
         {/* Moving Trout Image */}
         <div
-          className="absolute z-30 w-8 h-8 transform -translate-x-1/2 -top-3"
+          className="absolute z-20 w-8 h-8 transform -translate-x-1/2 -top-3"
           style={{
             left: progressBarWidth,
             transition: "left 1s linear",
