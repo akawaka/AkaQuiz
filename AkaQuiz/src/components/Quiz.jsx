@@ -226,11 +226,6 @@ const Quiz = ({
             <p className="text-md">Bonnes réponses: {correctGuesses}</p>
             <div className="flex items-center mt-4 space-x-4">
               <Button
-                label="Recommencer"
-                variant="primary"
-                onClick={handleRestart}
-              ></Button>
-              <Button
                 label="Voir le leaderboard"
                 variant="secondary"
                 onClick={handleToggleLeaderboard}
@@ -238,10 +233,15 @@ const Quiz = ({
               {!user && (
                 <Button
                   label="Enregistrer le score"
-                  variant="primary"
+                  variant="secondary"
                   onClick={handleOpenAuthModal}
                 ></Button>
               )}
+              <Button
+                label="Recommencer"
+                variant="primary"
+                onClick={handleRestart}
+              ></Button>
             </div>
           </div>
         </Card>
@@ -290,11 +290,8 @@ const Quiz = ({
 
       <div className="col-span-2">
         {/* Display the score and correct guesses */}
-        <Card>
-          <p className="text-lg font-bold">Score: {score}</p>
-          <p className="text-gray-600 text-md">
-            Bonnes réponses: {correctGuesses}
-          </p>
+        <Card backgroundColor="bg-red-500">
+          <p className="text-4xl font-bold text-white">Score {score}</p>
         </Card>
       </div>
       <div className="col-span-3 row-span-2">
@@ -323,11 +320,12 @@ const Quiz = ({
           </form>
           <div className="pt-6">
             <Button
-              variant="icon"
+              variant="labelIcon"
               icon={<ArrowPathIcon className="w-6 h-6" />}
+              label="O secour c trop dur je pass"
               onClick={handlePass}
             >
-              O secour c trop dur je pass
+
             </Button>
           </div>
 
@@ -356,7 +354,9 @@ const Quiz = ({
       </div>
       <div className="col-span-4">
         <Card>
-          <p>totottototoototototo</p>
+          <p className="text-gray-600 text-md">
+            Bonnes réponses: {correctGuesses}
+          </p>
         </Card>
       </div>
     </div>

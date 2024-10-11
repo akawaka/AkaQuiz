@@ -99,7 +99,7 @@ const AuthenticationModal = ({ onClose, onAuthenticated }) => {
         content=""
         onClose={onClose}
       >
-        <form className="flex flex-col space-y-6" onSubmit={handleSubmit}>
+        <form className="flex flex-col items-center w-full pt-4 space-y-6" onSubmit={handleSubmit}>
           {!isLogin && (
             <Input
               type="text"
@@ -120,7 +120,7 @@ const AuthenticationModal = ({ onClose, onAuthenticated }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <div className="flex justify-between pt-6">
+          <div className="flex justify-between">
             <Button
               type="submit"
               label={isLogin ? 'Login' : 'Sign Up'}
@@ -130,7 +130,7 @@ const AuthenticationModal = ({ onClose, onAuthenticated }) => {
           </div>
         </form>
         <p
-          className="mt-4 text-blue-500 cursor-pointer"
+          className="mt-8 text-red-500 cursor-pointer"
           onClick={() => setIsLogin(!isLogin)}
         >
           {isLogin

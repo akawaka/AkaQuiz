@@ -1,22 +1,48 @@
 import PropTypes from 'prop-types';
 
-export const Button = ({ label, onClick, className, variant = 'primary', icon, children, ...props }) => {
+const ButtonVariants = {
+  primary: {
+    className: 'bg-red-500 font-medium text-lg tracking-tight text-white hover:bg-red-600 focus:ring-red-600 py-2 px-4',
+    content: ({ label }) => (
+      <>
+        {label}
+      </>
+    ),
+  },
+  secondary: {
+    className: 'bg-white font-medium text-lg tracking-tight text-red-500 border border-gray-200 hover:border-red-600 hover:text-red-600 focus:ring-red-600 py-2 px-4',
+    content: ({ label }) => (
+      <>
+        {label}
+      </>
+    ),
+  },
+  labelIcon: {
+    className: 'text-gray-400 hover:text-gray-500 rounded-full p-2',
+    content: ({ label, icon }) => (
+      <>
+        <div className="mr-2">{icon}</div>
+        {label}
+      </>
+    ),
+  },
+  icon: {
+    className: 'text-gray-400 hover:text-gray-500 rounded-full p-2',
+    content: ({ children }) => children,
+  },
+};
+
+export const Button = ({ variant = 'primary', onClick, className, icon, label, children, ...props }) => {
+  const { className: variantClassName, content } = ButtonVariants[variant];
   const baseStyle = 'rounded focus:outline-none focus:ring-2 transition ease-out duration-300';
-  const variantStyle = variant === 'primary'
-    ? 'bg-red-500 text-white hover:bg-red-600 focus:ring-red-600'
-    : variant === 'secondary'
-      ? 'bg-white text-red-500 border border-gray-200 hover:border-red-600 hover:text-red-600 focus:ring-red-600'
-      : 'text-gray-400 hover:text-gray-500 rounded-full';
-  const paddingStyle = variant === 'icon' ? 'p-2' : 'py-2 px-4';
 
   return (
     <button
-      className={`${baseStyle} ${variantStyle} ${paddingStyle} ${className} flex items-center justify-center`}
+      className={`${baseStyle} ${variantClassName} ${className} flex items-center justify-center`}
       onClick={onClick}
       {...props}
     >
-      {icon && <span className="mr-2">{icon}</span>}
-      {variant === 'icon' ? children : label}
+      {content({ label, icon, children })}
     </button>
   );
 };
