@@ -19,11 +19,11 @@ export const Modal = ({
         onClick={onClose}
       ></div>
       <div className="absolute z-40 transform -translate-x-1/2 -translate-y-1/2 w-[600px] left-1/2 top-1/2">
-        <div className="relative flex items-center justify-center w-full overflow-auto h-96">
+        <div className="relative flex items-center justify-center w-full overflow-auto">
           <Card>
             <div>
               <Heading level={2}>{title}</Heading>
-              <div className="mt-2">{content}</div>
+              <div className="mt-4">{content}</div>
             </div>
             {children}
             <button

@@ -218,7 +218,7 @@ const Quiz = ({
 
   if (isGameEnd) {
     return (
-      <div className="relative z-10 grid gap-8">
+      <div className="relative z-10">
         <Card>
           <Heading level={2}>Temps écoulé!</Heading>
           <div>
@@ -259,36 +259,92 @@ const Quiz = ({
         )}
 
         {/* Authentication Modal */}
-      {isAuthModalOpen && (
-        <AuthenticationModal
-          onClose={() => setIsAuthModalOpen(false)}
-          onAuthenticated={handleAuthenticated}
-        />
-      )}
+        {isAuthModalOpen && (
+          <AuthenticationModal
+            onClose={() => setIsAuthModalOpen(false)}
+            onAuthenticated={handleAuthenticated}
+          />
+        )}
       </div>
     );
   }
 
   return (
-    <div className="relative z-10 grid gap-8">
+    <div className="relative z-10 grid grid-cols-7 gap-4">
       <div className="absolute top-0 left-0">
         <Button variant="icon" onClick={onReturnHome}>
           <HomeIcon className="w-6 h-6" />
         </Button>
       </div>
 
-      <div className="row-span-3">
+      <div className="col-span-5">
         <Card>
           <Heading level={2}>Quiz Time !</Heading>
           <p>
             Ceci est un jeu ou il faut trouver les mots via les définitions
-            blablabla Essayez d&apos;en trouver le plus possible ! Si c&apos;est trop
-            difficile, vous pouvez passer
+            blablabla Essayez d&apos;en trouver le plus possible ! Si c&apos;est
+            trop difficile, vous pouvez passer
           </p>
         </Card>
       </div>
 
-      <div className="row-span-1">
+      <div className="col-span-2">
+        {/* Display the score and correct guesses */}
+        <Card>
+          <p className="text-lg font-bold">Score: {score}</p>
+          <p className="text-gray-600 text-md">
+            Bonnes réponses: {correctGuesses}
+          </p>
+        </Card>
+      </div>
+      <div className="col-span-3 row-span-2">
+        <Card>
+          <div className="mt-6">
+            <p className="text-lg">Définition: {currentWord.def}</p>
+            <p className="text-gray-600 text-md">
+              Catégorie: {currentWord.catGram}
+            </p>
+          </div>
+          <form
+            onSubmit={handleSubmit}
+            className="flex items-center mt-4 space-x-4"
+          >
+            <Input
+              type="text"
+              value={userGuess}
+              onChange={handleInputChange}
+              placeholder="Votre réponse ici..."
+            />
+            <Button
+              label="Valider"
+              onClick={handleSubmit}
+              variant="primary"
+            ></Button>
+          </form>
+          <div className="pt-6">
+            <Button
+              variant="icon"
+              icon={<ArrowPathIcon className="w-6 h-6" />}
+              onClick={handlePass}
+            >
+              O secour c trop dur je pass
+            </Button>
+          </div>
+
+          {feedback && (
+            <p
+              className={`mt-4 ${
+                feedback === "Correct! Chargement d'un nouveau mot..."
+                  ? "text-green-600"
+                  : "text-red-600"
+              }`}
+            >
+              {feedback}
+            </p>
+          )}
+        </Card>
+      </div>
+      <div className="col-span-4">
         <Card>
           <TimerProgress
             timeLeft={timeLeft}
@@ -298,62 +354,11 @@ const Quiz = ({
           />
         </Card>
       </div>
-
-      <Card>
-        <div className="mt-6">
-          <p className="text-lg">Définition: {currentWord.def}</p>
-          <p className="text-gray-600 text-md">
-            Catégorie: {currentWord.catGram}
-          </p>
-        </div>
-        <form
-          onSubmit={handleSubmit}
-          className="flex items-center mt-4 space-x-4"
-        >
-          <Input
-            type="text"
-            value={userGuess}
-            onChange={handleInputChange}
-            placeholder="Votre réponse ici..."
-          />
-          <Button
-            label="Valider"
-            onClick={handleSubmit}
-            variant="primary"
-          ></Button>
-        </form>
-        <div className="pt-6">
-          <Button
-            variant="icon"
-            icon={<ArrowPathIcon className="w-6 h-6" />}
-            onClick={handlePass}
-          >
-            O secour c trop dur je pass
-          </Button>
-        </div>
-
-        {feedback && (
-          <p
-            className={`mt-4 ${
-              feedback === "Correct! Chargement d'un nouveau mot..."
-                ? "text-green-600"
-                : "text-red-600"
-            }`}
-          >
-            {feedback}
-          </p>
-        )}
-
-        {/* Display the score and correct guesses */}
-        <Card className="mt-6">
-          <p className="text-lg font-bold">Score: {score}</p>
-          <p className="text-gray-600 text-md">
-            Bonnes réponses: {correctGuesses}
-          </p>
+      <div className="col-span-4">
+        <Card>
+          <p>totottototoototototo</p>
         </Card>
-      </Card>
-
-
+      </div>
     </div>
   );
 };
