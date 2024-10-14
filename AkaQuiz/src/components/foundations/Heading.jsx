@@ -6,8 +6,8 @@ export const Heading = ({ level, children, white = false, ...props }) => {
   const styles = {
     1: 'text-5xl font-extrabold',
     2: 'text-4xl font-bold',
-    3: 'text-3xl font-bold',
-    default: 'text-2xl font-semibold'
+    3: 'text-2xl font-bold',
+    default: 'text-xl font-semibold'
   };
   const headingStyle = styles[level] || styles.default;
   const textColor = white ? 'text-white' : 'text-slate-800';

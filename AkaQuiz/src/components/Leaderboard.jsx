@@ -32,7 +32,7 @@ const Leaderboard = ({ onClose }) => {
 
   return (
     <Modal
-      title="Leaderboard"
+      title="Classement"
       content={<Table headers={headers} rows={rows} />}
       onClose={onClose}
     />

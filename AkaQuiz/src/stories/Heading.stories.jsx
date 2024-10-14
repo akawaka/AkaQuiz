@@ -1,9 +1,12 @@
-// src/components/typography/Heading.stories.jsx
-import Heading from '../components/foundations/Heading';
+import { Heading } from '../components/foundations/Heading';
 
 export default {
   title: 'Design System/Foundations/Typography/Heading',
   component: Heading,
+  parameters: {
+    layout: 'centered',
+  },
+  tags: ['autodocs'],
   argTypes: {
     level: {
       control: {
@@ -14,35 +17,45 @@ export default {
     children: {
       control: 'text',
     },
-    className: {
-      control: 'text',
+    white: {
+      control: 'boolean',
     },
   },
 };
 
-const Template = (args) => <Heading {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-  level: 2,
-  children: 'This is an H2 Heading',
+export const H1 = {
+  args: {
+    level: 1,
+    children: 'This is an H1 Heading',
+  },
 };
 
-export const H1Heading = Template.bind({});
-H1Heading.args = {
-  level: 1,
-  children: 'This is an H1 Heading',
+export const H2 = {
+  args: {
+    level: 2,
+    children: 'This is an H2 Heading',
+  },
 };
 
-export const H3Heading = Template.bind({});
-H3Heading.args = {
-  level: 3,
-  children: 'This is an H3 Heading',
+export const H3 = {
+  args: {
+    level: 3,
+    children: 'This is an H3 Heading',
+  },
 };
 
-export const CustomStyledHeading = Template.bind({});
-CustomStyledHeading.args = {
-  level: 2,
-  children: 'This is a custom styled H2 Heading',
-  className: 'text-red-500', // Apply any custom styles here
+export const WhiteHeading = {
+  args: {
+    level: 2,
+    children: 'This is a white H2 Heading',
+    white: true,
+  },
+};
+
+export const CustomStyledHeading = {
+  args: {
+    level: 2,
+    children: 'This is a custom styled H2 Heading',
+    className: 'text-red-500',
+  },
 };

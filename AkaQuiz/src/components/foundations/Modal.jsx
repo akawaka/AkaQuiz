@@ -23,7 +23,7 @@ export const Modal = ({
           <Card>
             <div className="w-full h-full">
               <Heading level={2}>{title}</Heading>
-              <div className="mt-4">{content}</div>
+              <div className="mt-2">{content}</div>
             </div>
             {children}
             <button
@@ -31,7 +31,7 @@ export const Modal = ({
               className="absolute p-2 text-white top-2 right-2 group"
             >
               <XMarkIcon
-                className="text-slate-800 transition duration-300 ease-out w-7 h-7 group-hover:text-slate-600"
+                className="transition duration-300 ease-out text-slate-800 w-7 h-7 group-hover:text-slate-600"
                 aria-hidden="true"
               />
             </button>
@@ -45,7 +45,7 @@ export const Modal = ({
 Modal.propTypes = {
   title: PropTypes.string.isRequired,
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
-  onClose: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
   children: PropTypes.node,
 };
 

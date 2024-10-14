@@ -13,7 +13,7 @@ const LandingPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isLeaderboardVisible, setIsLeaderboardVisible] = useState(false);
-  const { timeLeft, startTimer, resetTimer, isActive } = useTimer(120);
+  const { timeLeft, startTimer, isActive } = useTimer(123);
 
   const handleStartGame = () => {
     setShowModal(true);
@@ -26,18 +26,6 @@ const LandingPage = () => {
   };
 
   const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleRestartGame = () => {
-    resetTimer();
-    setIsGameStarted(true);
-    startTimer();
-  };
-
-  const handleReturnHome = () => {
-    resetTimer();
-    setIsGameStarted(false);
     setShowModal(false);
   };
 
@@ -67,7 +55,7 @@ const LandingPage = () => {
                   variant="primary"
                 />
                 <Button
-                  label="Voir le Leaderboard"
+                  label="Voir le Classement"
                   onClick={handleToggleLeaderboard}
                   variant="secondary"
                 />
@@ -80,8 +68,6 @@ const LandingPage = () => {
           <Quiz
             timeLeft={timeLeft}
             isActive={isActive}
-            onRestart={handleRestartGame}
-            onReturnHome={handleReturnHome}
           />
         )}
 

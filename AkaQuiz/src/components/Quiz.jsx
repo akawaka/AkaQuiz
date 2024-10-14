@@ -17,7 +17,7 @@ import Badge from "./foundations/Badge";
 import BodyText from "./foundations/BodyText";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 
-const Quiz = ({ timeLeft, totalTime = 120, isActive, onRestart }) => {
+const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
   const [words, setWords] = useState({});
   const [currentWord, setCurrentWord] = useState(null);
   const [userGuess, setUserGuess] = useState("");
@@ -28,7 +28,22 @@ const Quiz = ({ timeLeft, totalTime = 120, isActive, onRestart }) => {
   const [user, setUser] = useState(null);
   const [isLeaderboardVisible, setIsLeaderboardVisible] = useState(false);
   const [isGameEnd, setIsGameEnd] = useState(false);
- const scoreRef = useRef({ value: 0 });
+  const scoreRef = useRef({ value: 0 });
+  const [countdown, setCountdown] = useState(3);
+  const [isGameStarted, setIsGameStarted] = useState(false);
+
+
+  // Countdown logic to start the game after 3 seconds
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else {
+      setIsGameStarted(true);
+    }
+  }, [countdown]);
 
   // Fetch the words from the JSON file
   useEffect(() => {
@@ -231,6 +246,22 @@ const Quiz = ({ timeLeft, totalTime = 120, isActive, onRestart }) => {
     setIsLeaderboardVisible((prevVisible) => !prevVisible);
   };
 
+  if (!isGameStarted) {
+    return (
+      <>
+        <div className="fixed inset-0 z-30 bg-slate-800 bg-opacity-80"></div>
+          <div className="absolute z-40 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+            <Card>
+                <Heading level={3}>Préparez-vous...</Heading>
+                <Heading level={2} className="text-5xl">
+                  {countdown}
+                </Heading>
+            </Card>
+          </div>
+      </>
+    );
+  }
+
   if (isGameEnd) {
     return (
       <div className="relative z-10">
@@ -245,7 +276,9 @@ const Quiz = ({ timeLeft, totalTime = 120, isActive, onRestart }) => {
           <div className="flex flex-col items-center justify-center space-y-8">
             <Heading level={2}>Temps écoulé !</Heading>
             <div className="flex flex-col items-center justify-center">
-              <BodyText variant="paragraph">Félécitation, votre score final est de</BodyText>
+              <BodyText variant="paragraph">
+                Félécitation, votre score final est de
+              </BodyText>
               <Heading level={2}>{score} </Heading>
             </div>
           </div>
@@ -275,12 +308,6 @@ const Quiz = ({ timeLeft, totalTime = 120, isActive, onRestart }) => {
         {isLeaderboardVisible && (
           <div className="mt-6">
             <Leaderboard onClose={handleToggleLeaderboard} />
-            <button
-              onClick={handleToggleLeaderboard}
-              className="px-4 py-2 mt-4 text-white bg-red-500 rounded hover:bg-red-600"
-            >
-              Fermer le Leaderboard
-            </button>
           </div>
         )}
 
@@ -334,7 +361,7 @@ const Quiz = ({ timeLeft, totalTime = 120, isActive, onRestart }) => {
             </Heading>
           </div>
           <img
-            className="absolute -right-10 z-0 w-40 h-40 transform rotate-[20deg] opacity-80 top-20"
+            className="absolute -right-12 z-0 w-40 h-40 transform rotate-[20deg] opacity-80 top-20"
             src={cuteLobsterImage}
             alt=""
           />
@@ -416,10 +443,11 @@ const Quiz = ({ timeLeft, totalTime = 120, isActive, onRestart }) => {
           <Heading level={3}>Bonnes réponses</Heading>
           <div className="flex flex-wrap gap-2 pt-8">
             {correctAnswersList.map((answer, index) => (
-              <div key={index} className="flex justify-center p-2 rounded even:bg-indigo-50 odd:bg-red-50">
-                <BodyText variant="paragraph">
-                  {answer.word}
-                </BodyText>
+              <div
+                key={index}
+                className="flex justify-center p-2 rounded even:bg-indigo-50 odd:bg-red-50"
+              >
+                <BodyText variant="paragraph">{answer.word}</BodyText>
               </div>
             ))}
           </div>
@@ -433,7 +461,6 @@ Quiz.propTypes = {
   timeLeft: PropTypes.number.isRequired,
   totalTime: PropTypes.number,
   isActive: PropTypes.bool.isRequired,
-  onRestart: PropTypes.func.isRequired,
 };
 
 export default Quiz;

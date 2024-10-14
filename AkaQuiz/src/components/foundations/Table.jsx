@@ -1,18 +1,22 @@
 import PropTypes from 'prop-types';
+import BodyText from './BodyText';
 
 export const Table = ({ headers, rows }) => {
   return (
     <div>
-      <span>
+      <BodyText variant="paragraph">
         Voila le classement super
-      </span>
-      <table className="min-w-full mt-10 bg-white border border-slate-200 shadow-md">
+      </BodyText>
+      <table className="min-w-full mt-10 bg-white border shadow-md border-slate-200">
         <thead>
           <tr>
+            <th className="px-4 py-2 text-left border-b bg-slate-200 border-slate-200">
+              Position
+            </th>
             {headers.map((header, index) => (
               <th
                 key={index}
-                className="px-4 py-2 text-left bg-slate-200 border-b border-slate-200"
+                className="px-4 py-2 text-left border-b bg-slate-200 border-slate-200"
               >
                 {header}
               </th>
@@ -22,6 +26,9 @@ export const Table = ({ headers, rows }) => {
         <tbody>
           {rows.map((row, rowIndex) => (
             <tr key={rowIndex}>
+              <td className="px-4 py-2 border-b border-slate-200">
+                {rowIndex + 1}
+              </td>
               {row.map((cell, cellIndex) => (
                 <td key={cellIndex} className="px-4 py-2 border-b border-slate-200">
                   {cell}
