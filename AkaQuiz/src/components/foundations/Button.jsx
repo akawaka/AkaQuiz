@@ -10,7 +10,15 @@ const ButtonVariants = {
     ),
   },
   secondary: {
-    className: 'bg-white font-medium text-lg tracking-tight text-red-500 border border-gray-200 hover:border-red-600 hover:text-red-600 focus:ring-red-600 py-2 px-4',
+    className: 'bg-indigo-500 font-medium text-lg tracking-tight text-white hover:bg-indigo-600 focus:ring-indigo-600 py-2 px-4',
+    content: ({ label }) => (
+      <>
+        {label}
+      </>
+    ),
+  },
+  soft: {
+    className: 'bg-white font-medium text-lg tracking-tight text-red-500 border border-slate-200 hover:border-red-600 hover:text-red-600 focus:ring-red-600 py-2 px-4',
     content: ({ label }) => (
       <>
         {label}
@@ -18,7 +26,7 @@ const ButtonVariants = {
     ),
   },
   labelIcon: {
-    className: 'text-gray-400 hover:text-gray-500 rounded-full p-2',
+    className: 'text-slate-400 hover:text-slate-500 rounded-full p-2  focus:ring-slate-600 focus:text-slate-700',
     content: ({ label, icon }) => (
       <>
         <div className="mr-2">{icon}</div>
@@ -27,7 +35,7 @@ const ButtonVariants = {
     ),
   },
   icon: {
-    className: 'text-gray-400 hover:text-gray-500 rounded-full p-2',
+    className: 'text-slate-400 hover:text-slate-500 rounded-full p-2',
     content: ({ children }) => children,
   },
 };
@@ -49,9 +57,9 @@ export const Button = ({ variant = 'primary', onClick, className, icon, label, c
 
 Button.propTypes = {
   label: PropTypes.string,
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   className: PropTypes.string,
-  variant: PropTypes.oneOf(['primary', 'secondary', 'icon']),
+  variant: PropTypes.oneOf(['primary', 'secondary', 'icon', 'soft', 'labelIcon']),
   icon: PropTypes.node,
   children: PropTypes.node,
 };

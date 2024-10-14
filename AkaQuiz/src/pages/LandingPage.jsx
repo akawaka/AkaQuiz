@@ -13,7 +13,7 @@ const LandingPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isLeaderboardVisible, setIsLeaderboardVisible] = useState(false);
-  const { timeLeft, startTimer, resetTimer, isActive } = useTimer(30);
+  const { timeLeft, startTimer, resetTimer, isActive } = useTimer(120);
 
   const handleStartGame = () => {
     setShowModal(true);

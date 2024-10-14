@@ -19,7 +19,7 @@ export const Default = {
     children: (
       <>
         <h2 className="text-xl font-bold">Sample Card</h2>
-        <p className="mt-2 text-gray-600">
+        <p className="mt-2 text-slate-600">
           This is a simple card component. Use it to wrap content with padding, shadow, and rounded corners.
         </p>
       </>
@@ -33,7 +33,7 @@ export const WithCustomContent = {
     children: (
       <>
         <h2 className="text-xl font-bold">Custom Card Content</h2>
-        <p className="mt-2 text-gray-600">
+        <p className="mt-2 text-slate-600">
           You can add different types of content to the card like lists, images, or anything else.
         </p>
       </>
