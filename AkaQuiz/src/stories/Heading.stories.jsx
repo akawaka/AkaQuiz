@@ -51,11 +51,3 @@ export const WhiteHeading = {
     white: true,
   },
 };
-
-export const CustomStyledHeading = {
-  args: {
-    level: 2,
-    children: 'This is a custom styled H2 Heading',
-    className: 'text-red-500',
-  },
-};

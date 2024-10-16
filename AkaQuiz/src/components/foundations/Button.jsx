@@ -35,7 +35,7 @@ const ButtonVariants = {
     ),
   },
   icon: {
-    className: 'text-slate-400 hover:text-slate-500 rounded-full p-2',
+    className: 'text-slate-400 hover:text-slate-500 focus:ring-slate-600 rounded-full p-2',
     content: ({ children }) => children,
   },
 };

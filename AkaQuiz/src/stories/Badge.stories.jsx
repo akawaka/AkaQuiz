@@ -29,11 +29,3 @@ export const WithBorder = {
     variant: 'withBorder',
   },
 };
-
-export const CustomStyledBadge = {
-  args: {
-    children: 'Custom Badge',
-    variant: 'withBorder',
-    className: 'bg-blue-100 text-blue-800 ring-blue-500/10',
-  },
-};

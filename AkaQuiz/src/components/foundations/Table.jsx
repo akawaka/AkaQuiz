@@ -10,13 +10,13 @@ export const Table = ({ headers, rows }) => {
       <table className="min-w-full mt-10 bg-white border shadow-md border-slate-200">
         <thead>
           <tr>
-            <th className="px-4 py-2 text-left border-b bg-slate-200 border-slate-200">
+            <th className="px-4 py-2 text-left border-b bg-slate-300 border-slate-200">
               Position
             </th>
             {headers.map((header, index) => (
               <th
                 key={index}
-                className="px-4 py-2 text-left border-b bg-slate-200 border-slate-200"
+                className="px-4 py-2 text-left border-b bg-slate-300 border-slate-200"
               >
                 {header}
               </th>

@@ -285,7 +285,7 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
           <div>
             <div className="flex items-center mt-8 space-x-4">
               <Button
-                label="Voir le leaderboard"
+                label="Voir le Classement"
                 variant="soft"
                 onClick={handleToggleLeaderboard}
               ></Button>
@@ -361,7 +361,7 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
             </Heading>
           </div>
           <img
-            className="absolute -right-12 z-0 w-40 h-40 transform rotate-[20deg] opacity-80 top-20"
+            className="absolute -right-12 z-0 w-40 h-40 transform rotate-[20deg] opacity-90 top-20"
             src={cuteLobsterImage}
             alt=""
           />

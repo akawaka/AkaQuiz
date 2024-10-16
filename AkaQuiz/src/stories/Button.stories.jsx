@@ -1,4 +1,5 @@
 import Button from '../components/foundations/Button';
+import { XMarkIcon, ArrowPathIcon } from "@heroicons/react/20/solid";
 
 // Default export to define metadata for the story
 export default {
@@ -56,21 +57,13 @@ export const LabelIcon = {
   args: {
     label: 'Label Icon Button',
     variant: 'labelIcon',
-    icon: '🔍',
+    icon: <ArrowPathIcon className="w-5 h-5" />,
   },
 };
 
 export const Icon = {
   args: {
     variant: 'icon',
-    children: '🔍',
-  },
-};
-
-export const CustomStyledButton = {
-  args: {
-    label: 'Custom Styled Button',
-    variant: 'primary',
-    className: 'bg-gradient-to-r from-green-400 to-blue-500',
+    children: <XMarkIcon className="w-5 h-5" />,
   },
 };

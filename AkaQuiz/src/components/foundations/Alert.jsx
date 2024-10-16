@@ -37,7 +37,7 @@ export const Alert = ({
     success: "bg-green-50 text-green-700 border-green-300",
     error: "bg-red-50 text-red-700 border-red-300",
     warning: "bg-yellow-50 text-yellow-700 border-yellow-300",
-    info: "bg-blue-50 text-blue-700 border-blue-300",
+    info: "bg-blue-50 text-indigo-700 border-indigo-300",
   };
 
   const iconStyles = {
