@@ -64,6 +64,7 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
     setFeedback("");
     setCorrectAnswersList([]);
     selectRandomWord(words);
+    onRestart();
   };
 
   // Check if the user is already logged in
@@ -110,8 +111,9 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
   // Handle restarting the game
   const handleRestart = () => {
     resetGame();
-    onRestart();
     setIsGameEnd(false);
+    setIsGameStarted(false);
+    setCountdown(3);
   };
 
   // Handle passing the word (skip)
@@ -323,7 +325,7 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
   }
 
   return (
-    <div className="relative z-10 grid grid-cols-7 gap-4">
+    <div className="relative z-10 grid grid-cols-1 gap-4 mt-12 xl:grid-cols-7">
       <div className="absolute left-0 transform -translate-y-full -top-4">
         <Button variant="icon">
           <a href="/">
@@ -331,7 +333,7 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
           </a>
         </Button>
       </div>
-      <div className="col-span-5">
+      <div className="xl:col-span-5">
         <Card>
           <div className="space-y-4 text-center">
             <Heading level={2}>Le Dictionnaire à l&apos;Envers</Heading>
@@ -345,7 +347,7 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
         </Card>
       </div>
 
-      <div className="col-span-2">
+      <div className="hidden xl:block xl:col-span-2">
         {/* Display the score and correct guesses */}
         <Card
           backgroundColor="bg-indigo-500"
@@ -367,7 +369,7 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
           />
         </Card>
       </div>
-      <div className="col-span-3 row-span-2">
+      <div className="order-3 xl:order-1 xl:col-span-3 xl:row-span-2">
         <Card justifyContent="justify-center">
           <Heading level={3}>Les mots à trouver</Heading>
           <div className="flex flex-col items-center justify-center pt-8 space-y-4 text-center">
@@ -427,7 +429,7 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
           </div>
         </Card>
       </div>
-      <div className="col-span-4">
+      <div className="order-2 xl:order-2 xl:col-span-4">
         <Card>
           <Heading level={3}>Le temps restant</Heading>
           <TimerProgress
@@ -438,7 +440,7 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
           />
         </Card>
       </div>
-      <div className="col-span-4">
+      <div className="hidden xl:block xl:order-3 xl:col-span-4">
         <Card>
           <Heading level={3}>Bonnes réponses</Heading>
           <div className="flex flex-wrap gap-2 pt-8">
@@ -461,6 +463,7 @@ Quiz.propTypes = {
   timeLeft: PropTypes.number.isRequired,
   totalTime: PropTypes.number,
   isActive: PropTypes.bool.isRequired,
+  onRestart: PropTypes.func.isRequired,
 };
 
 export default Quiz;

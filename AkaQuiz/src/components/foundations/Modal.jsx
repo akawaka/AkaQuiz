@@ -18,7 +18,7 @@ export const Modal = ({
         {...props}
         onClick={onClose}
       ></div>
-      <div className="absolute z-40 transform -translate-x-1/2 -translate-y-1/2 w-[600px] left-1/2 top-1/2">
+      <div className="absolute z-40 transform -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-3xl left-1/2 top-1/2">
         <div className="relative flex items-center justify-center w-full overflow-auto">
           <Card>
             <div className="w-full h-full">

@@ -13,7 +13,7 @@ const LandingPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isLeaderboardVisible, setIsLeaderboardVisible] = useState(false);
-  const { timeLeft, startTimer, isActive } = useTimer(123);
+  const { timeLeft, startTimer, isActive, resetTimer } = useTimer(123);
 
   const handleStartGame = () => {
     setShowModal(true);
@@ -33,11 +33,16 @@ const LandingPage = () => {
     setIsLeaderboardVisible((prevVisible) => !prevVisible);
   };
 
+  const handleRestart = () => {
+    resetTimer();
+    handleGameStart();
+  };
+
   return (
     <div className="h-screen bg-center bg-cover" style={{ backgroundImage: `url(${bgSvg})` }}>
       <div className="flex items-center justify-center h-screen max-w-5xl mx-auto">
         {!isGameStarted && !isLeaderboardVisible ? (
-          <div className="relative text-center max-w-prose">
+          <div className="relative px-4 text-center max-w-prose">
             <Card>
               <div className="absolute top-0 w-60 left-1/2">
                 <img src={logoLobster} alt="AkaQuiz Logo" className="absolute inset-0 transform -translate-x-1/2 -translate-y-1/2 bg-cover" />
@@ -68,6 +73,7 @@ const LandingPage = () => {
           <Quiz
             timeLeft={timeLeft}
             isActive={isActive}
+            onRestart={handleRestart}
           />
         )}
 

@@ -16,8 +16,8 @@ const TimerProgress = ({
   }, [timeLeft, totalTime]);
 
   return (
-    <div className="flex flex-col items-center justify-center pt-16 w-96">
-      <div className="relative w-full">
+    <div className="flex flex-col items-center justify-center pt-4 xl:pt-16 w-96">
+      <div className="relative hidden w-full xl:block">
         {/* Otter Image */}
         <div className="absolute z-20 -top-5 -left-6">
           <img className="w-20 h-20 transform -translate-y-1/2" src={lighthouseImage} alt="Otter" />
@@ -56,12 +56,12 @@ const TimerProgress = ({
         <div className="absolute left-[66.5%] h-3 bg-white w-px z-10"></div>
         <div className="absolute left-[83.3%] h-3 bg-white w-px z-10"></div>
       </div>
-      <div className="flex items-baseline justify-center pt-16 space-x-2">
+      <div className="flex items-baseline justify-center space-x-2 xl:pt-16">
         <Heading level={2}>
           {timeLeft}
         </Heading>
         <Heading level={4}>
-          secondes restantes
+          secondes
         </Heading>
       </div>
     </div>
