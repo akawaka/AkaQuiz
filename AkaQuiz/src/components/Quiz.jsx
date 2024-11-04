@@ -16,8 +16,11 @@ import Heading from "./foundations/Heading";
 import Badge from "./foundations/Badge";
 import BodyText from "./foundations/BodyText";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import { QuestionMarkCircleIcon, ClockIcon, SpeakerWaveIcon, SpeakerXMarkIcon } from "@heroicons/react/24/outline";
+import sounds from '../sounds';
 
-const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
+
+const Quiz = ({ timeLeft, totalTime = 183, isActive, onRestart }) => {
   const [words, setWords] = useState({});
   const [currentWord, setCurrentWord] = useState(null);
   const [userGuess, setUserGuess] = useState("");
@@ -31,19 +34,57 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
   const scoreRef = useRef({ value: 0 });
   const [countdown, setCountdown] = useState(3);
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(() => {
+    const savedMusicState = localStorage.getItem("isMusicPlaying");
+    return savedMusicState !== null ? JSON.parse(savedMusicState) : true;
+  });
+  const [isSoundsPlaying, setIsSoundsPlaying] = useState(() => {
+    const savedSoundsState = localStorage.getItem("isSoundsPlaying");
+    return savedSoundsState !== null ? JSON.parse(savedSoundsState) : true;
+  });
 
 
   // Countdown logic to start the game after 3 seconds
   useEffect(() => {
     if (countdown > 0) {
+      sounds.startMusic.play();
       const timer = setTimeout(() => {
         setCountdown(countdown - 1);
       }, 1000);
       return () => clearTimeout(timer);
     } else {
       setIsGameStarted(true);
+      if (isMusicPlaying) {
+        playMusic();
+      }
     }
-  }, [countdown]);
+  }, [countdown, isMusicPlaying]);
+
+  const playMusic = () => {
+    sounds.backgroundMusic.play();
+    setIsMusicPlaying(true);
+  };
+
+  const pauseMusic = () => {
+    sounds.backgroundMusic.pause();
+    setIsMusicPlaying(false);
+  };
+
+  const toggleMusic = () => {
+    if (isMusicPlaying) {
+      pauseMusic();
+      localStorage.setItem("isMusicPlaying", false);
+    } else {
+      playMusic();
+      localStorage.setItem("isMusicPlaying", true);
+    }
+  };
+
+  const toggleSounds = () => {
+    const newSoundsState = !isSoundsPlaying;
+    setIsSoundsPlaying(newSoundsState);
+    localStorage.setItem("isSoundsPlaying", newSoundsState);
+  };
 
   // Fetch the words from the JSON file
   useEffect(() => {
@@ -85,7 +126,7 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
     const wordKeys = Object.keys(words);
     const randomIndex = Math.floor(Math.random() * wordKeys.length);
     const randomWord = wordKeys[randomIndex];
-    console.log("Random word:", randomWord);
+    // console.log("Random word:", randomWord);
     setCurrentWord({
       word: randomWord,
       catGram: words[randomWord].catGram,
@@ -111,9 +152,15 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
   // Handle restarting the game
   const handleRestart = () => {
     resetGame();
+    setCountdown(3);
     setIsGameEnd(false);
     setIsGameStarted(false);
-    setCountdown(3);
+    const savedMusicState = localStorage.getItem("isMusicPlaying");
+    if (savedMusicState !== null && JSON.parse(savedMusicState)) {
+      setTimeout(() => {
+        playMusic();
+      }, 3000);
+    }
   };
 
   // Handle passing the word (skip)
@@ -145,6 +192,9 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
 
     if (normalizedUserGuess === normalizedCorrectWord) {
       setFeedback("Correct! Chargement d'un nouveau mot...");
+      if (isSoundsPlaying) {
+        sounds.correctAnswer.play();
+      }
       const newScore = scoreRef.current.value + 10; // Increment the score
       animateScore(newScore); // Animate the score change
       setCorrectAnswersList((prevList) => [
@@ -155,6 +205,9 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
         selectRandomWord(words);
       }, 500);
     } else {
+      if (isSoundsPlaying) {
+        sounds.wrongAnswer.play();
+      }
       setFeedback("Incorrect, essayez à nouveau!");
       setUserGuess("");
     }
@@ -214,8 +267,11 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
     }
     if (!isActive) {
       setIsGameEnd(true);
+      if (isMusicPlaying) {
+        pauseMusic();
+      }
     }
-  }, [isActive, user, score, submitScore]);
+  }, [isActive, user, score, submitScore, isMusicPlaying]);
 
   // Handle opening the authentication modal at the end of the game
   const handleOpenAuthModal = () => {
@@ -266,6 +322,7 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
 
   if (isGameEnd) {
     return (
+
       <div className="relative z-10">
         <div className="absolute left-0 transform -translate-y-full -top-4">
           <Button variant="icon">
@@ -274,6 +331,7 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
             </a>
           </Button>
         </div>
+
         <Card>
           <div className="flex flex-col items-center justify-center space-y-8">
             <Heading level={2}>Temps écoulé !</Heading>
@@ -333,6 +391,40 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
           </a>
         </Button>
       </div>
+      <div className="absolute right-0 transform -translate-y-full -top-4">
+        <div className="flex items-center space-x-4">
+          {isMusicPlaying ? (
+            <Button
+                variant="labelIcon"
+                icon={<SpeakerWaveIcon className="w-6 h-6" />}
+                label="Musique"
+                onClick={toggleMusic}
+              ></Button>
+          ) : (
+            <Button
+                variant="labelIcon"
+                icon={<SpeakerXMarkIcon className="w-6 h-6" />}
+                label="Musique"
+                onClick={toggleMusic}
+              ></Button>
+          )}
+          {isSoundsPlaying ? (
+            <Button
+                variant="labelIcon"
+                icon={<SpeakerWaveIcon className="w-6 h-6" />}
+                label="Son"
+                onClick={toggleSounds}
+              ></Button>
+          ) : (
+            <Button
+                variant="labelIcon"
+                icon={<SpeakerXMarkIcon className="w-6 h-6" />}
+                label="Son"
+                onClick={toggleSounds}
+              ></Button>
+          )}
+        </div>
+      </div>
       <div className="xl:col-span-5">
         <Card>
           <div className="space-y-4 text-center">
@@ -371,7 +463,10 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
       </div>
       <div className="order-3 xl:order-1 xl:col-span-3 xl:row-span-2">
         <Card justifyContent="justify-center">
-          <Heading level={3}>Les mots à trouver</Heading>
+          <div className="flex items-center space-x-4">
+            <QuestionMarkCircleIcon className="w-10 h-10 p-2 rounded-full bg-slate-200 text-slate-700" />
+            <Heading level={3}>Les mots à trouver</Heading>
+          </div>
           <div className="flex flex-col items-center justify-center pt-8 space-y-4 text-center">
             <Badge variant="withBorder">{currentWord.catGram}</Badge>
             <div className="relative">
@@ -431,7 +526,10 @@ const Quiz = ({ timeLeft, totalTime = 123, isActive, onRestart }) => {
       </div>
       <div className="order-2 xl:order-2 xl:col-span-4">
         <Card>
-          <Heading level={3}>Le temps restant</Heading>
+          <div className="flex items-center space-x-4">
+            <ClockIcon className="w-10 h-10 p-2 rounded-full bg-slate-200 text-slate-700" />
+            <Heading level={3}>Le temps restant</Heading>
+          </div>
           <TimerProgress
             timeLeft={timeLeft}
             totalTime={totalTime}

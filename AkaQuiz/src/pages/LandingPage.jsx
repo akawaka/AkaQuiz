@@ -13,7 +13,7 @@ const LandingPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isLeaderboardVisible, setIsLeaderboardVisible] = useState(false);
-  const { timeLeft, startTimer, isActive, resetTimer } = useTimer(123);
+  const { timeLeft, startTimer, isActive, resetTimer } = useTimer(183);
 
   const handleStartGame = () => {
     setShowModal(true);
@@ -62,7 +62,7 @@ const LandingPage = () => {
                 <Button
                   label="Voir le Classement"
                   onClick={handleToggleLeaderboard}
-                  variant="secondary"
+                  variant="soft"
                 />
               </div>
             </Card>
