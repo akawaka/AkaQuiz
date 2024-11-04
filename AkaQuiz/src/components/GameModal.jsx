@@ -16,7 +16,7 @@ const GameModal = ({ onGameStart, onClose }) => {
       onClose={onClose}
     >
       <div className="flex justify-between mt-6">
-        <Button label="Commencer" onClick={onGameStart} variant="primary" />
+        <Button label="Lancer la partie" onClick={onGameStart} variant="primary" />
       </div>
     </Modal>
   );

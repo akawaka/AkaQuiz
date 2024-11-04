@@ -16,6 +16,7 @@ import Heading from "./foundations/Heading";
 import Badge from "./foundations/Badge";
 import BodyText from "./foundations/BodyText";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import { XCircleIcon, CheckCircleIcon } from "@heroicons/react/16/solid";
 import { QuestionMarkCircleIcon, ClockIcon, SpeakerWaveIcon, SpeakerXMarkIcon } from "@heroicons/react/24/outline";
 import sounds from '../sounds';
 
@@ -502,7 +503,7 @@ const Quiz = ({ timeLeft, totalTime = 183, isActive, onRestart }) => {
             ></Button>
             {feedback && (
               <p
-                className={`absolute -bottom-8 -left-4 ${
+                className={`absolute -bottom-8 -left-4 flex items-center space-x-2 ${
                   feedback === "Correct! Chargement d'un nouveau mot..."
                     ? "text-green-600"
                     : feedback === "Mot passé. Chargement d'un nouveau mot..."
@@ -510,7 +511,13 @@ const Quiz = ({ timeLeft, totalTime = 183, isActive, onRestart }) => {
                     : "text-red-600"
                 }`}
               >
-                {feedback}
+                {feedback === "Correct! Chargement d'un nouveau mot..." && (
+                  <CheckCircleIcon className="w-5 h-5 text-green-600" />
+                )}
+                {feedback !== "Correct! Chargement d'un nouveau mot..." && feedback !== "Mot passé. Chargement d'un nouveau mot..." && (
+                  <XCircleIcon className="w-5 h-5 text-red-600" />
+                )}
+                <span>{feedback}</span>
               </p>
             )}
           </form>

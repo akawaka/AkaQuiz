@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 export const Heading = ({ level, children, white = false, ...props }) => {
   const Tag = `h${level}`;
   const styles = {
-    1: 'text-5xl font-extrabold',
-    2: 'text-4xl font-bold',
+    1: 'text-5xl font-extrabold tracking-tight',
+    2: 'text-4xl font-bold tracking-tight',
     3: 'text-2xl font-bold',
     default: 'text-xl font-semibold'
   };
