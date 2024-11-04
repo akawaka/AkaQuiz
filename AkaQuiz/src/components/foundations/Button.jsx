@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 const ButtonVariants = {
   primary: {
-    className: 'bg-red-600 font-bold shadow text-lg text-white hover:bg-red-700 focus:ring-red-700 py-2 px-4',
+    className: 'bg-red-600 font-medium shadow text-lg text-white hover:bg-red-700 focus:ring-red-700 py-2 px-4',
     content: ({ label }) => (
       <>
         {label}
@@ -10,7 +10,7 @@ const ButtonVariants = {
     ),
   },
   secondary: {
-    className: 'bg-indigo-600 font-bold shadow text-lg text-white hover:bg-indigo-700 focus:ring-indigo-700 py-2 px-4',
+    className: 'bg-indigo-600 font-medium shadow text-lg text-white hover:bg-indigo-700 focus:ring-indigo-700 py-2 px-4',
     content: ({ label }) => (
       <>
         {label}
@@ -18,7 +18,7 @@ const ButtonVariants = {
     ),
   },
   soft: {
-    className: 'bg-white font-bold text-lg tracking-tight text-red-600 border border-slate-200 hover:border-red-700 hover:text-red-700 focus:ring-red-700 py-2 px-4',
+    className: 'bg-white font-medium text-lg text-red-600 border border-slate-200 hover:border-red-700 hover:text-red-700 focus:ring-red-700 py-2 px-4',
     content: ({ label }) => (
       <>
         {label}
