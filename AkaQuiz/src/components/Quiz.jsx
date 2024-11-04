@@ -296,10 +296,6 @@ const Quiz = ({ timeLeft, totalTime = 183, isActive, onRestart }) => {
     }
   };
 
-  if (!currentWord) {
-    return <div>Chargement...</div>;
-  }
-
   // Handle leaderboard visibility toggle
   const handleToggleLeaderboard = () => {
     setIsLeaderboardVisible((prevVisible) => !prevVisible);
